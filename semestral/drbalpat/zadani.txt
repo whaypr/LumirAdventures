@@ -1,0 +1,71 @@
+# Semestrální práce z PA2: Akční hra
+
+
+## Specifikace zadání
+Cílem semestrální práce je vytvořit jednoduchou 2D hru pomocí knihovny SDL.
+
+Bude se jednat o platform shooter hru, ve které hráč musí čelit nájezdům nepřátelských
+jednotek, které musí porazit, přičemž vlny nepřátel budou stále větší a větší a postupně se budou
+objevovat i silnější jednotky.
+
+Čím déle hráč zvládne přežít, tím vyšší bude jeho výsledné skóre. Během svého přežívání
+může hráč narazit na různé bonusy, které po sobě občas zanechají skolení nepřátelé.
+
+Nepřátelům dodávají sílu magické kameny, čím více jich nepřátelská jednotka u sebe má, tím je silněší a nebezpečnější.
+Občas se povede zabít stvůru tak, že drahý kámen zůstane nepoškozený a hráč ho tak může sebrat.
+Za tyto kameny si pak může pořídit různá vylepšení (více životů, rychlejší pohyb, silnější zbraně, ...)
+a pomocí nich příště dosáhnout lepšího skóre.
+
+Hráč i nepřátelé podléhají vlivu gravitace.
+Mapa může být libovolně velká, pokud se celá mapa nevejde na obrazovku, je zobrazena jen její část kolem
+hráče a postupně se posouvá s pohybem hráče.
+
+Nepřátelé se objevují na předem definovaných místech. Tato místa spolu s celou mapu může
+uživatel načíst z připraveného souboru. Takto budou načítány předvytvořené mapy a uživatel si bude moci
+vytvořit i vlastní.
+
+Hráčův postup i jeho nejvyšší dosažené skóre bude také možno uložit do souboru a pokračovat tak
+ve hraní i po opětovném zapntuí hry.
+
+
+## Architektura programu
+Základ implementace je třída `Game`, která zaštiťuje ostatní komponenty aplikace a zajišťuje běh celé hry;
+stará se o obsluhu událostí, volá aktualizační metody všech objektů a vykresluje změny na obrazovku.
+
+Každý objekt, který se nějakým způsobem účastní dění ve hře, proto typicky bude poskytovat metody
+`update()` a `render()`, které třída `Game` volá.
+
+Bazická třída pro objekty participující v samotné hře je třída `Entity`, která zastřešuje všechny třídy vyžadující
+textury k vykreslení a vektor určující jejich pozici. Také svým potomkům poskytuje metody pro aktualizaci a vykreslení.
+Pohyblivé entity dále budou dědit ze třídy `Moving`, nepohyblivé ze třídy `Stationary`.
+
+Třídy `Enemy` a `Item` dále poskytují společně rozhraní pro své podtypy:
+- `Enemy` pro různé typy nepřátel s různými vlastnostmi a schopnostmi.
+- Item` pro rozdílné předměty, které hráč může sebrat.
+
+Prvky uživatelského rozhraní budou dědit ze třídy `UI`.
+
+### Návrh polymorfismu
+- Entity
+    - Moving
+        - Player
+        - Enemy
+            - Small
+            - Medium
+            - Big
+        - Bullet
+    - Stationary
+        - Item
+            - Boost
+            - MagicStone
+        - Tile
+- UI
+    - MainMenu
+    - UpgradeMenu
+    - Pause
+
+
+## Poznámky
+Dosavadní použité textury slouží pouze pro testovací účely a pravděpodobně budou změněny.
+Projekt se momentálně nachází ve stavu rozpracovaného core game enginu, po jeho dokončení přijde na řadu vlastní implementace hry.
+Řada prvků implementace je pouze dočasná (v kódu označeno jako "temp") a v budoucnu bude obsluhovaná a zpracovávaná svou vlastní třídou či metodou.
