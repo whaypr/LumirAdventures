@@ -13,8 +13,11 @@ public:
 	void update ( std::vector< std::unique_ptr<Tile> > & tiles );
 	void render() override;
 
+	bool grounded () { return isGrounded; }
+
 private:
 	bool isLookingRight;
+	bool isGrounded;
 
 	//temp
 	int cnt = 0;

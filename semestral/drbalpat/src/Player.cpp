@@ -17,7 +17,7 @@ Player::Player ( const char * texturePath, Vector2 pos ) : Moving( texturePath, 
 void Player::update ( std::vector< std::unique_ptr<Tile> > & tiles ) {
 	Moving::update();
 
-	velocity = {0,0};
+	isGrounded = false;
 
 	// movement
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
@@ -33,6 +33,9 @@ void Player::update ( std::vector< std::unique_ptr<Tile> > & tiles ) {
 		velocity.x += 4;
 		isLookingRight = true;
 	}
+	// reset x velocity for calculations in the next step
+	velocity.x = 0;
+
 
 	//temp
 	// tiles collision
