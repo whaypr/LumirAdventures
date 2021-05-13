@@ -32,6 +32,22 @@ void Player::update ( std::vector< std::unique_ptr<Tile> > & tiles ) {
 	pos.x += velocity.x;
 	pos.y += velocity.y;
 
+	// animation
+		// on the ground
+	if ( grounded() ) {
+		if ( velocity.x || velocity.y ) {
+			if ( lastTime + frameRate < SDL_GetTicks() ) {
+				currentFrame = ( currentFrame + 1 ) % 4;
+				lastTime = SDL_GetTicks();
+			}
+		} else
+			currentFrame = 0;
+		// in the air
+	} else
+		currentFrame = 1;
+
+	srcR.x = 32 * currentFrame + offset;
+
 	// reset x velocity for calculations in the next step
 	velocity.x = 0;
 }

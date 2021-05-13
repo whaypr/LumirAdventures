@@ -20,7 +20,10 @@ private:
 	bool isLookingRight;
 	bool isGrounded;
 
-	//temp
-	int cnt = 0;
 	void checkCollision ( std::vector< std::unique_ptr<Tile> > & tiles );
+
+	// anim
+	int currentFrame = 0;
+	Uint64 frameRate = 150;
+	int lastTime = 0;
 };
