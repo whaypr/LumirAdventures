@@ -13,6 +13,7 @@ public:
 	void update ( std::vector< std::unique_ptr<Tile> > & tiles );
 	void render() override;
 
+	void changeVelocity ( float x, float y );
 	bool grounded () { return isGrounded; }
 
 private:
@@ -21,4 +22,5 @@ private:
 
 	//temp
 	int cnt = 0;
+	void checkCollision ( std::vector< std::unique_ptr<Tile> > & tiles );
 };

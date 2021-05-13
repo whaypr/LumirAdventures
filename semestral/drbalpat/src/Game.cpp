@@ -51,6 +51,17 @@ void Game::handleEvents () {
 			isRunning = false;
 			break;
 	}
+
+	// keyboard input
+	const Uint8 *state = SDL_GetKeyboardState(NULL);
+
+		// player move
+	if ( state[SDL_SCANCODE_A])
+		pl->changeVelocity( -4, 0 );
+	if ( state[SDL_SCANCODE_D] )
+		pl->changeVelocity( 4, 0 );
+	if ( state[SDL_SCANCODE_SPACE] && pl->grounded() )
+		pl->changeVelocity( 0, -8 );
 }
 
 //---------------------------------------------------------------------------

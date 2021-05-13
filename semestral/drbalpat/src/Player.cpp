@@ -19,23 +19,19 @@ void Player::update ( std::vector< std::unique_ptr<Tile> > & tiles ) {
 
 	isGrounded = false;
 
-	// movement
-	const Uint8 *state = SDL_GetKeyboardState(NULL);
-
-	if ( state[SDL_SCANCODE_W] ) {
-		velocity.y -= 4;
-	} if ( state[SDL_SCANCODE_S]) {
-		velocity.y += 4;
-	} if ( state[SDL_SCANCODE_A]) {
-		velocity.x -= 4;
-		isLookingRight = false;
-	} if ( state[SDL_SCANCODE_D] ) {
-		velocity.x += 4;
+	if ( velocity.x > 0 )
 		isLookingRight = true;
-	}
+	else if ( velocity.x < 0 )
+		isLookingRight = false;
+
 	// reset x velocity for calculations in the next step
 	velocity.x = 0;
 
+//---------------------------------------------------------------------------
+void Player::changeVelocity ( float x, float y ) {
+	velocity.x += x;
+	velocity.y += y;
+}
 
 	//temp
 	// tiles collision
