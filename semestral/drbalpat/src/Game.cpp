@@ -38,7 +38,7 @@ void Game::init ( const char * title, int xpos, int ypos, int width, int height,
 	}
 
 	//temp
-	pl = new Player( "assets/images/characters.png", Vector2(500,500) );
+	pl = new Player( "assets/images/characters.png", Vector2(600,100) );
 	map = new Map();
 }
 
