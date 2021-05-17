@@ -28,27 +28,35 @@ void Player::update () {
 		isLookingRight = false;
 
 	// check collision
-	int tileSize = 64;
 	for ( const auto & c : colCheck.checkCollision( pos, dstR.w, dstR.h ) ) {
-		Vector2 tPos = c.second;
+		Vector2 tPos = c.second->getPos();
+		SDL_Rect tRect = c.second->getRect();
 
 		switch ( c.first ) {
 			case 'b':
 				isGrounded = true;
-				if ( velocity.y > 0 ) velocity.y = 0;
-				pos.y = tPos.y - dstR.h;
+				if ( velocity.y > 0 ) {
+					velocity.y = 0;
+					pos.y = tPos.y - dstR.h;
+				}
 				break;
 			case 't':
-				if ( velocity.y < 0 ) velocity.y = 0;
-				pos.y = tPos.y + tileSize;
+				if ( velocity.y < 0 ) {
+					velocity.y = 0;
+					pos.y = tPos.y + tRect.h;
+				}
 				break;
 			case 'r':
-				if ( velocity.x > 0 ) velocity.x = 0;
-				pos.x = tPos.x - dstR.w;
+				if ( velocity.x > 0 ) {
+					velocity.x = 0;
+					if ( ! grounded() ) pos.x = tPos.x - dstR.w; // cond to prevent unwanted "teleportation"
+				}
 				break;
 			case 'l':
-				if ( velocity.x < 0 ) velocity.x = 0;
-				pos.x = tPos.x + tileSize;
+				if ( velocity.x < 0 ) {
+					velocity.x = 0;
+					if ( ! grounded() ) pos.x = tPos.x + tRect.w; // cond to prevent unwanted "teleportation"
+				}
 				break;
 		}
 	}

@@ -8,5 +8,5 @@
 
 class CollisionChecker {
 public:
-	std::vector< std::pair<char, Vector2> > checkCollision ( Vector2 pos, int w, int h );
+	std::vector< std::pair<char, std::shared_ptr<Tile>> > checkCollision ( Vector2 pos, int w, int h );
 };

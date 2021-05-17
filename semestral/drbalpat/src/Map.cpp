@@ -3,7 +3,7 @@
 
 #include <string>
 
-std::vector< std::unique_ptr<Tile> > Map::tiles = {};
+std::vector< std::shared_ptr<Tile> > Map::tiles = {};
 
 Map::Map () {
 	backgroud = TextureManager::LoadTexture("assets/images/background/country-platform-back.png");
@@ -28,7 +28,7 @@ Map::Map () {
 				continue;
 
 			tiles.emplace_back(
-				std::make_unique<Tile>( path.c_str(), Vector2(64 * i, 64 * j) )
+				std::make_shared<Tile>( path.c_str(), Vector2(64 * i, 64 * j) )
 			);
 		}
 }

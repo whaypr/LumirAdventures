@@ -10,10 +10,10 @@ public:
 	Map ();
 
 	void render();
-	static std::vector< std::unique_ptr<Tile> > & getTiles () { return tiles; }
+	static std::vector< std::shared_ptr<Tile> > & getTiles () { return tiles; }
 
 private:
-	static std::vector< std::unique_ptr<Tile> > tiles;
+	static std::vector< std::shared_ptr<Tile> > tiles;
 
 	SDL_Texture *backgroud, *forest;
 	SDL_Rect srcR, dstR;
