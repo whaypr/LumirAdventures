@@ -1,4 +1,5 @@
 #include "Player.hpp"
+#include <iostream>
 
 const int offset = 9; // spritesheet offset for each animation frame
 
@@ -83,10 +84,3 @@ void Player::render() {
 	else
 		SDL_RenderCopyEx(Game::renderer, texture, &srcR, &dstR, 0, NULL, SDL_FLIP_HORIZONTAL);
 }
-
-//---------------------------------------------------------------------------
-void Player::changeVelocity ( float x, float y ) {
-	velocity.x += x;
-	velocity.y += y;
-}
-

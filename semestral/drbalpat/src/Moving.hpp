@@ -5,6 +5,7 @@ public:
 	Moving ( const char * texturePath, Vector2 pos ) : Entity( texturePath, pos ) {}
 
 	void update() override;
+	void changeVelocity ( float x, float y );
 
 protected:
 	const float gravity = .7;

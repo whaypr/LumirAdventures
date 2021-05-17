@@ -10,7 +10,6 @@ public:
 	void update () override;
 	void render() override;
 
-	void changeVelocity ( float x, float y );
 	bool grounded () { return isGrounded; }
 
 private:
