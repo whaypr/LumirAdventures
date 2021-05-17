@@ -6,8 +6,10 @@ public:
 
 	void update() override;
 	void changeVelocity ( float x, float y );
+	int getSpeed () { return speed; }
 
 protected:
 	const float gravity = .7;
 	Vector2 velocity;
+	int speed = 4;
 };
