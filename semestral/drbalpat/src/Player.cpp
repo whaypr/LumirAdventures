@@ -16,7 +16,7 @@ Player::Player ( const char * texturePath, Vector2 pos ) : Moving( texturePath, 
 }
 
 //---------------------------------------------------------------------------
-void Player::update ( std::vector< std::unique_ptr<Tile> > & tiles ) {
+void Player::update () {
 	Moving::update();
 
 	isGrounded = false;
@@ -26,7 +26,31 @@ void Player::update ( std::vector< std::unique_ptr<Tile> > & tiles ) {
 	else if ( velocity.x < 0 )
 		isLookingRight = false;
 
-	checkCollision( tiles );
+	// check collision
+	int tileSize = 64;
+	for ( const auto & c : colCheck.checkCollision( pos, dstR.w, dstR.h ) ) {
+		Vector2 tPos = c.second;
+
+		switch ( c.first ) {
+			case 'b':
+				isGrounded = true;
+				if ( velocity.y > 0 ) velocity.y = 0;
+				pos.y = tPos.y - dstR.h;
+				break;
+			case 't':
+				if ( velocity.y < 0 ) velocity.y = 0;
+				pos.y = tPos.y + tileSize;
+				break;
+			case 'r':
+				if ( velocity.x > 0 ) velocity.x = 0;
+				pos.x = tPos.x - dstR.w;
+				break;
+			case 'l':
+				if ( velocity.x < 0 ) velocity.x = 0;
+				pos.x = tPos.x + tileSize;
+				break;
+		}
+	}
 
 	// position update
 	pos.x += velocity.x;
@@ -66,46 +90,3 @@ void Player::changeVelocity ( float x, float y ) {
 	velocity.y += y;
 }
 
-//---------------------------------------------------------------------------
-void Player::checkCollision ( std::vector< std::unique_ptr<Tile> > & tiles ) {
-	for ( auto & t : tiles ) {
-		Vector2 tPos = t->getPos();
-		int tileSize = 64;
-
-		// AABB - collision occurs
-		if ( pos.x + dstR.w >= tPos.x &&
-		     tPos.x + tileSize >= pos.x &&
-		     pos.y + dstR.h >= tPos.y &&
-		     tPos.y + tileSize >= pos.y
-		   )
-		{
-			// from which sides there is a collision
-			float b_colsn = ( tPos.y + tileSize ) -  pos.y; // ( tiles bottom )
-			float t_colsn = ( pos.y + dstR.h    ) - tPos.y; // ( player bottom )
-			float l_colsn = ( pos.x + dstR.w    ) - tPos.x; // ( player right )
-			float r_colsn = ( tPos.x + tileSize ) -  pos.x; // ( tiles right )
-
-			// bottom collision
-			if (t_colsn < b_colsn && t_colsn < l_colsn && t_colsn < r_colsn ) {
-				isGrounded = true;
-				if ( velocity.y > 0 ) velocity.y = 0;
-				pos.y = tPos.y - dstR.h;
-			}
-			// top collision
-			if (b_colsn < t_colsn && b_colsn < l_colsn && b_colsn < r_colsn) {
-				if ( velocity.y < 0 ) velocity.y = 0;
-				pos.y = tPos.y + tileSize;
-			}
-			// right collision
-			if (l_colsn < r_colsn && l_colsn < t_colsn && l_colsn < b_colsn) {
-				if ( velocity.x > 0 ) velocity.x = 0;
-				pos.x = tPos.x - dstR.w;
-			}
-			// left collision
-			if (r_colsn < l_colsn && r_colsn < t_colsn && r_colsn < b_colsn ) {
-				if ( velocity.x < 0 ) velocity.x = 0;
-				pos.x = tPos.x + tileSize;
-			}
-		}
-	}
-}

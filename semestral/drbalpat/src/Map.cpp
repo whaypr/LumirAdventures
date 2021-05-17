@@ -3,6 +3,8 @@
 
 #include <string>
 
+std::vector< std::unique_ptr<Tile> > Map::tiles = {};
+
 Map::Map () {
 	backgroud = TextureManager::LoadTexture("assets/images/background/country-platform-back.png");
 	forest = TextureManager::LoadTexture("assets/images/background/country-platform-forest.png");

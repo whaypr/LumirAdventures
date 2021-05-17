@@ -1,17 +1,17 @@
 #include "Game.hpp"
 #include "TextureManager.hpp"
+#include "CollisionChecker.hpp"
 #include "Player.hpp"
 #include "Map.hpp"
 
 #include <iostream>
-#include <cmath>
 
 SDL_Renderer * Game::renderer = nullptr;
 SDL_Event Game::event;
 
 //temp
-Player *pl;
 Map * map;
+Player *pl;
 
 //---------------------------------------------------------------------------
 void Game::init ( const char * title, int xpos, int ypos, int width, int height, bool fullscreen ) {
@@ -38,8 +38,8 @@ void Game::init ( const char * title, int xpos, int ypos, int width, int height,
 	}
 
 	//temp
-	pl = new Player( "assets/images/characters.png", Vector2(600,100) );
 	map = new Map();
+	pl = new Player( "assets/images/characters.png", Vector2(600, 80) );
 }
 
 //---------------------------------------------------------------------------
@@ -67,7 +67,7 @@ void Game::handleEvents () {
 //---------------------------------------------------------------------------
 void Game::update () {
 	//temp
-	pl->update( map->getTiles() );
+	pl->update();
 }
 
 //---------------------------------------------------------------------------

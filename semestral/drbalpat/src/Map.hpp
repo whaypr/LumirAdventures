@@ -10,12 +10,12 @@ public:
 	Map ();
 
 	void render();
-
-	std::vector< std::unique_ptr<Tile> > & getTiles () { return tiles; }
+	static std::vector< std::unique_ptr<Tile> > & getTiles () { return tiles; }
 
 private:
+	static std::vector< std::unique_ptr<Tile> > tiles;
+
 	SDL_Texture *backgroud, *forest;
-	std::vector< std::unique_ptr<Tile> > tiles;
 	SDL_Rect srcR, dstR;
 
 	//temp
