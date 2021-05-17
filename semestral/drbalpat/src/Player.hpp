@@ -5,7 +5,7 @@
 
 class Player : public Moving {
 public:
-	Player ( const char * texturePath, Vector2 pos = {0,0} );
+	Player ( const char * texturePath, Vector2 pos );
 
 	void update () override;
 	void render() override;

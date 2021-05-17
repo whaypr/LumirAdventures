@@ -11,7 +11,7 @@ public:
 	virtual void render ();
 
 	void changeTexture ( const char * texturePath );
-	Vector2 & getPos () { return pos; }
+	const Vector2 & getPos () { return pos; }
 
 protected:
 	Vector2 pos;
