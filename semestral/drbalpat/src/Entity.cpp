@@ -1,5 +1,7 @@
 #include "Entity.hpp"
 #include "TextureManager.hpp"
+#include "Math.hpp"
+#include "Camera.hpp"
 
 Entity::Entity ( const char * texturePath, Vector2 pos ) : pos ( pos ) {
 	texture = TextureManager::LoadTexture(texturePath);
@@ -17,8 +19,12 @@ Entity::Entity ( const char * texturePath, Vector2 pos ) : pos ( pos ) {
 }
 
 void Entity::update () {
-	dstR.x = pos.x;
-	dstR.y = pos.y;
+	Vector2 cam = Camera::getCamera()->getPos();
+
+	dstR.x = pos.x - cam.x;
+	dstR.y = pos.y - cam.y;
+
+	origin = { pos.x + dstR.w/2, pos.y + dstR.h/2 };
 }
 
 

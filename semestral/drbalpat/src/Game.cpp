@@ -3,6 +3,7 @@
 #include "CollisionChecker.hpp"
 #include "Player.hpp"
 #include "Map.hpp"
+#include "Camera.hpp"
 
 #include <iostream>
 
@@ -40,6 +41,8 @@ void Game::init ( const char * title, int xpos, int ypos, int width, int height,
 	//temp
 	map = new Map();
 	pl = new Player( "assets/images/characters.png", Vector2(600, 80) );
+
+	Camera::getCamera()->setTarget( pl->getOrigin() );
 }
 
 //---------------------------------------------------------------------------
@@ -67,7 +70,10 @@ void Game::handleEvents () {
 //---------------------------------------------------------------------------
 void Game::update () {
 	//temp
+	map->update();
 	pl->update();
+
+	Camera::getCamera()->update();
 }
 
 //---------------------------------------------------------------------------

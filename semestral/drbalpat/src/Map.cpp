@@ -15,8 +15,8 @@ Map::Map () {
 	dstR.w = dstR.h = 64;
 
 	// load map tiles and store them in a vector
-	for ( int i = 0; i < 25; ++i )
-		for ( int j = 0; j < 15; ++j ) {
+	for ( int i = 0; i < 35; ++i )
+		for ( int j = 0; j < 25; ++j ) {
 			int id = m[j][i];
 			std::string path = "assets/images/tiles/";
 
@@ -31,6 +31,11 @@ Map::Map () {
 				std::make_shared<Tile>( path.c_str(), Vector2(64 * i, 64 * j) )
 			);
 		}
+}
+
+void Map::update () {
+	for ( auto & t : tiles )
+		t->update();
 }
 
 void Map::render () {

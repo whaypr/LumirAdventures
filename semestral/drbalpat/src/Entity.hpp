@@ -11,11 +11,12 @@ public:
 	virtual void render ();
 
 	void changeTexture ( const char * texturePath );
-	const Vector2 & getPos () const { return pos; }
-	const SDL_Rect & getRect () const { return dstR; }
+	Vector2 getPos () const { return pos; }
+	SDL_Rect getRect () const { return dstR; }
+	Vector2 * getOrigin () { return &origin; }
 
+	Vector2 pos, origin;
 protected:
-	Vector2 pos;
 
 	SDL_Texture * texture;
 	SDL_Rect srcR, dstR;
