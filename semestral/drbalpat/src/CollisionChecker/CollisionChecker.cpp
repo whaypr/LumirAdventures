@@ -1,7 +1,5 @@
 #include "CollisionChecker.hpp"
-#include "Map.hpp"
-
-#include <iostream>
+#include "../Map/Map.hpp"
 
 std::vector< std::pair<char, std::shared_ptr<Tile>> > CollisionChecker::checkCollision ( Vector2 pos, int w, int h ) {
 	std::vector< std::pair<char, std::shared_ptr<Tile>> > res; // first: side of collision, second: colliding tile

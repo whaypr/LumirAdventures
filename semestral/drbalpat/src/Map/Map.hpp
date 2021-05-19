@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Tile.hpp"
+#include "../Entities/Stationary/Tile/Tile.hpp"
 
 #include <vector>
 #include <memory>

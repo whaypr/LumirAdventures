@@ -1,5 +1,5 @@
 #include "TextureManager.hpp"
-#include "Game.hpp"
+#include "../Game/Game.hpp"
 
 #include <SDL2/SDL_image.h>
 

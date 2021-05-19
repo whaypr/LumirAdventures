@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Moving.hpp"
-#include "CollisionChecker.hpp"
+#include "../Moving.hpp"
+#include "../../../CollisionChecker/CollisionChecker.hpp"
 
 class Player : public Moving {
 public:

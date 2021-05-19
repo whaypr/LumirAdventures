@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Math.hpp"
-#include "Tile.hpp"
+#include "../Math/Math.hpp"
+#include "../Entities/Stationary/Tile/Tile.hpp"
 
 #include <vector>
 #include <memory>

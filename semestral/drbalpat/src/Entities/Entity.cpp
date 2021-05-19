@@ -1,7 +1,7 @@
 #include "Entity.hpp"
-#include "TextureManager.hpp"
-#include "Math.hpp"
-#include "Camera.hpp"
+#include "../TextureManager/TextureManager.hpp"
+#include "../Math/Math.hpp"
+#include "../Camera/Camera.hpp"
 
 Entity::Entity ( const char * texturePath, Vector2 pos ) : pos ( pos ) {
 	texture = TextureManager::LoadTexture(texturePath);

@@ -1,5 +1,4 @@
 #include "Player.hpp"
-#include <iostream>
 
 const int offset = 9; // spritesheet offset for each animation frame
 

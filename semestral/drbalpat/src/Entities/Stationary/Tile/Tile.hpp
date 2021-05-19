@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Stationary.hpp"
-#include "TextureManager.hpp"
+#include "../Stationary.hpp"
+#include "../../../TextureManager/TextureManager.hpp"
 
 class Tile : public Stationary {
 public:

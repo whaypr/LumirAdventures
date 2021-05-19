@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Game.hpp"
-#include "Math.hpp"
+#include "../Game/Game.hpp"
+#include "../Math/Math.hpp"
 
 class Entity {
 public:
