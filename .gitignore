@@ -44,5 +44,5 @@
 ###################
 
 # Custom
-bin/
 *.sublime*
+semestral/drbalpat/drbalpat
