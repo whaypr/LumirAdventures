@@ -1,7 +1,8 @@
 #include "Map.hpp"
 #include "../TextureManager/TextureManager.hpp"
 
-#include <string>
+#include <iostream>
+#include <fstream>
 
 std::vector< std::shared_ptr<Tile> > Map::tiles = {};
 
@@ -14,23 +15,9 @@ Map::Map () {
 
 	dstR.w = dstR.h = 64;
 
-	// load map tiles and store them in a vector
-	for ( int i = 0; i < 35; ++i )
-		for ( int j = 0; j < 25; ++j ) {
-			int id = m[j][i];
-			std::string path = "assets/images/tiles/";
+	if ( ! loadMap( "assets/map.csv" ) )
+		std::cout << "Failed to load the map!" << std::endl;
 
-			if ( id == 1 )
-				path += "ground.png";
-			else if ( id == 2 ) 
-				path += "ground-top.png";
-			else
-				continue;
-
-			tiles.emplace_back(
-				std::make_shared<Tile>( path.c_str(), Vector2(64 * i, 64 * j) )
-			);
-		}
 }
 
 void Map::update () {
@@ -44,4 +31,46 @@ void Map::render () {
 
 	for ( auto & t : tiles )
 		t->render();
+}
+
+bool Map::loadMap ( const char * filePath ) {
+	// load map tiles and store them in a vector
+
+	std::ifstream mapFile( filePath );
+
+	if ( mapFile.fail() )
+		return false;
+
+    
+    std::string row;
+    int rowCnt = 0;
+  	while ( getline(mapFile, row) ) {
+    	if ( row.empty() )
+      		break;
+
+      	int colCnt = 0;
+      	for ( const char c : row ) {
+      		std::string path = "assets/images/tiles/";
+
+      		if ( c == '0' ) {
+      			colCnt++;
+      			continue;
+      		} else if ( c == '1' )
+				path += "ground.png";
+			else if ( c == '2' )
+				path += "ground-top.png";
+			else
+				continue;
+
+			tiles.emplace_back(
+				std::make_shared<Tile>( path.c_str(), Vector2(64 * colCnt, 64 * rowCnt) )
+			);
+
+			colCnt++;
+      	}
+
+      	rowCnt++;
+	}
+
+	return true;
 }
