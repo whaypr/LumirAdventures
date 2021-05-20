@@ -7,7 +7,7 @@ public:
 	Moving ( const char * texturePath, Vector2 pos, bool enableGravity = true );
 
 	void update() override;
-	void changeVelocity ( float x, float y );
+	void changeVelocity ( Vector2 newVelocity );
 	int getSpeed () { return speed; }
 
 protected:

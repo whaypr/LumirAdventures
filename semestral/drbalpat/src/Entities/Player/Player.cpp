@@ -61,8 +61,7 @@ void Player::update () {
 	}
 
 	// position update
-	pos.x += velocity.x;
-	pos.y += velocity.y;
+	pos += velocity;
 
 	// animation
 		// on the ground

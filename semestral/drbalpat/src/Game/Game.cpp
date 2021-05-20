@@ -60,11 +60,11 @@ void Game::handleEvents () {
 
 		// player move
 	if ( state[SDL_SCANCODE_A])
-		pl->changeVelocity( -pl->getSpeed(), 0 );
+		pl->changeVelocity( Vector2(-pl->getSpeed(), 0) );
 	if ( state[SDL_SCANCODE_D] )
-		pl->changeVelocity( pl->getSpeed(), 0 );
+		pl->changeVelocity( Vector2(pl->getSpeed(), 0) );
 	if ( state[SDL_SCANCODE_SPACE] && pl->grounded() )
-		pl->changeVelocity( 0, -8 );
+		pl->changeVelocity( Vector2(0, -8) );
 }
 
 //---------------------------------------------------------------------------

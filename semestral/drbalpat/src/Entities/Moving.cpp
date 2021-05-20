@@ -13,7 +13,6 @@ void Moving::update() {
 }
 
 //---------------------------------------------------------------------------
-void Moving::changeVelocity ( float x, float y ) {
-	velocity.x += x;
-	velocity.y += y;
+void Moving::changeVelocity ( Vector2 newVelocity ) {
+	velocity += newVelocity;
 }
