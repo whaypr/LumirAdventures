@@ -1,7 +1,7 @@
 #include "Game.hpp"
 #include "../TextureManager/TextureManager.hpp"
 #include "../CollisionChecker/CollisionChecker.hpp"
-#include "../Entities/Moving/Player/Player.hpp"
+#include "../Entities/Player/Player.hpp"
 #include "../Map/Map.hpp"
 #include "../Camera/Camera.hpp"
 

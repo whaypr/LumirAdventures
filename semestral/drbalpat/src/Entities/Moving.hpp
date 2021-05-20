@@ -1,8 +1,10 @@
-#include "../Entity.hpp"
+#pragma once
+
+#include "Entity.hpp"
 
 class Moving : public Entity {
 public:
-	Moving ( const char * texturePath, Vector2 pos ) : Entity( texturePath, pos ) {}
+	Moving ( const char * texturePath, Vector2 pos, bool enableGravity = true );
 
 	void update() override;
 	void changeVelocity ( float x, float y );
@@ -10,6 +12,8 @@ public:
 
 protected:
 	const float gravity = .7;
+	bool gravityEnabled;
+
 	Vector2 velocity;
 	int speed = 4;
 };

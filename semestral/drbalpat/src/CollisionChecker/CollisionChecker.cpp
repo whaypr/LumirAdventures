@@ -16,9 +16,9 @@ std::vector< std::pair<char, std::shared_ptr<Tile>> > CollisionChecker::checkCol
 		   )
 		{
 			// from which sides there is a collision
-			float b_clsn = ( pos.y + h         ) - tPos.y; // ( player bottom )
+			float b_clsn = ( pos.y + h         ) - tPos.y; // ( entity bottom )
 			float t_clsn = ( tPos.y + tRect.h ) -  pos.y; // ( tiles bottom )
-			float r_clsn = ( pos.x + w         ) - tPos.x; // ( player right )
+			float r_clsn = ( pos.x + w         ) - tPos.x; // ( entity right )
 			float l_clsn = ( tPos.x + tRect.w ) -  pos.x; // ( tiles right )
 
 				// bottom collision
