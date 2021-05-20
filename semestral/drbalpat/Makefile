@@ -9,17 +9,20 @@ OUT      = drbalpat
 all: compile doc
 
 clean:
-	rm -f $(OBJ) $(OUT)
+	rm -f $(OBJ) $(DEP) $(OUT)
 
 # CREATE
 SRC     := $(shell find src -name '*.cpp')
 OBJ     := $(SRC:.cpp=.o)
+DEP     := $(patsubst %.cpp,%.d,$(SRC))
+
+-include $(DEP)
 
 compile: $(OBJ)
-	$(LD) $(CXXFLAGS) $(OBJ) -o $(OUT) $(LIBS)
+	$(LD) $(CXXFLAGS) $^ -o $(OUT) $(LIBS)
 
-$(OBJ): %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -o $@ -c $<
+%.o: %.cpp Makefile
+	$(CXX) $(CXXFLAGS) -MMD -MP -c $< -o $@
 
 doc:
 	# todo
