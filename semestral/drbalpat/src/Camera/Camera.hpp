@@ -9,6 +9,7 @@ public:
 	static Camera * getCamera ( int w = 1600, int h = 960 ) { return camera = camera ? camera : new Camera( w, h ); }	
 
 	void setTarget ( Vector2 * t ) { target = t; }
+	void setMapSize ( int w, int h ) { mapW = w; mapH = h; }
 	void update ();
 
 	SDL_Rect getView ()  { return view; }
@@ -19,5 +20,6 @@ private:
 	static Camera * camera;
 
 	Vector2 * target, pos;
+	int mapW, mapH;
 	SDL_Rect view;
 };

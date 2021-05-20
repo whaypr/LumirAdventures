@@ -11,11 +11,10 @@ void Camera::update () {
 	if ( view.y < 0 )
 		view.y = 0;
 
-	if ( view.x > 64*35 - view.w )
-		view.x = 64*35 - view.w;
-	if ( view.y > 64*25 - view.h )
-		view.y = 64*25 - view.h;
-	
+	if ( view.x > mapW - view.w )
+		view.x = mapW - view.w;
+	if ( view.y > mapH - view.h )
+		view.y = mapH - view.h;
 
 	pos = Vector2( view.x, view.y );
 }

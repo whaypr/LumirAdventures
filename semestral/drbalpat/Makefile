@@ -1,8 +1,8 @@
 # OPTIONS
 CXX      = g++
 LD       = g++
-CXXFLAGS = -Wall -pedantic -g
-LIBS     = -lSDL2main -lSDL2 -lSDL2_image
+CXXFLAGS = -Wall -pedantic -g -I/usr/include/libxml2/
+LIBS     = -lSDL2main -lSDL2 -lSDL2_image -lxml2
 OUT      = drbalpat
 
 # GENERATE ALL / DELETE ALL
@@ -18,7 +18,7 @@ OBJ     := $(SRC:.cpp=.o)
 compile: $(OBJ)
 	$(LD) $(CXXFLAGS) $(OBJ) -o $(OUT) $(LIBS)
 
-$(OBJ): %.o : %.cpp
+$(OBJ): %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 doc:

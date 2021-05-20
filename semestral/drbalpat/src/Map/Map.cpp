@@ -1,8 +1,14 @@
 #include "Map.hpp"
 #include "../TextureManager/TextureManager.hpp"
+#include "../Camera/Camera.hpp"
 
+#include <libxml/parser.h>
+#include <libxml/tree.h>
+#include <libxml/xpath.h>
+#include <libxml/xmlmemory.h>
+
+#include <cstdlib>
 #include <iostream>
-#include <fstream>
 
 std::vector< std::shared_ptr<Tile> > Map::tiles = {};
 
@@ -15,7 +21,7 @@ Map::Map () {
 
 	dstR.w = dstR.h = 64;
 
-	if ( ! loadMap( "assets/map.csv" ) )
+	if ( ! loadMap( "assets/map3.tmx" ) )
 		std::cout << "Failed to load the map!" << std::endl;
 
 }
@@ -34,43 +40,69 @@ void Map::render () {
 }
 
 bool Map::loadMap ( const char * filePath ) {
-	// load map tiles and store them in a vector
+	LIBXML_TEST_VERSION
 
-	std::ifstream mapFile( filePath );
+	xmlDoc * doc = xmlReadFile(filePath, NULL, 0);
+	if ( ! doc )
+	   return false;
 
-	if ( mapFile.fail() )
-		return false;
+	// load actual map
+	xmlXPathObjectPtr path = xmlXPathEval( (const xmlChar*)"/map/layer/data", xmlXPathNewContext(doc) );
 
-    
-    std::string row;
-    int rowCnt = 0;
-  	while ( getline(mapFile, row) ) {
-    	if ( row.empty() )
-      		break;
+	unsigned char * map = path->nodesetval->nodeTab[0]->children->content;
 
-      	int colCnt = 0;
-      	for ( const char c : row ) {
-      		std::string path = "assets/images/tiles/";
+	std::string row;
+    int rowsCnt = -1, colsCnt = 0;
 
-      		if ( c == '0' ) {
-      			colCnt++;
-      			continue;
-      		} else if ( c == '1' )
-				path += "ground.png";
-			else if ( c == '2' )
-				path += "ground-top.png";
-			else
-				continue;
+	for ( int i = 0; map[i]; i++ ) {
+		std::string path = "assets/images/tiles/";
 
-			tiles.emplace_back(
-				std::make_shared<Tile>( path.c_str(), Vector2(64 * colCnt, 64 * rowCnt) )
+		if ( map[i] == '\n' ) {
+			rowsCnt++;
+			colsCnt = 0;
+			continue;
+		} else if ( map[i] == '0' ) {
+			colsCnt++;
+			continue;
+		} else if ( map[i] == '1' )
+			path += "ground.png";
+		else if ( map[i] == '2' )
+			path += "ground-top.png";
+		else
+			continue;
+
+		tiles.emplace_back(
+				std::make_shared<Tile>( path.c_str(), Vector2(64 * colsCnt, 64 * rowsCnt) )
 			);
 
-			colCnt++;
-      	}
-
-      	rowCnt++;
+		colsCnt++;
 	}
 
+	path = xmlXPathEval( (const xmlChar*)"/map", xmlXPathNewContext(doc) );
+
+	// get tiles width
+	xmlChar * tileWidth_xml = xmlGetProp( path->nodesetval->nodeTab[0], (const xmlChar *)"tilewidth" );
+		int tileWidth = atoi( (const char *)tileWidth_xml );
+	xmlFree(tileWidth_xml);
+
+	// get tiles height
+	xmlChar * tileHeight_xml = xmlGetProp( path->nodesetval->nodeTab[0], (const xmlChar *)"tileheight" );
+		int tileHeight = atoi( (const char *) tileHeight_xml );
+	xmlFree(tileHeight_xml);
+
+	// get map width
+	xmlChar * colsCnt_xml = xmlGetProp( path->nodesetval->nodeTab[0], (const xmlChar *)"width" );
+		int mapWidth = atoi( (const char *)colsCnt_xml ) * tileWidth;
+	xmlFree(colsCnt_xml);
+
+	// get map height
+	xmlChar * rowsCnt_xml = xmlGetProp( path->nodesetval->nodeTab[0], (const xmlChar *)"height" );
+		int mapHeight = atoi( (const char *)rowsCnt_xml ) * tileHeight;
+	xmlFree(rowsCnt_xml);
+
+	Camera::getCamera()->setMapSize( mapWidth, mapHeight );
+
+	xmlFreeDoc(doc);
+	xmlCleanupParser();
 	return true;
 }
