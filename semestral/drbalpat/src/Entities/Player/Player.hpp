@@ -3,6 +3,7 @@
 #include <list>
 
 #include "../Character.hpp"
+#include "../Bullet/Bullet.hpp"
 
 class Player : public Character {
 public:
@@ -11,7 +12,13 @@ public:
 	void update () override;
 	void render() override;
 
+	int getAmmo () { return ammo; }
+	void shoot();
 
 private:
+	int ammo = 42;
+	int fireRate = 20;
+	int fireCurrent = 0;
 
+	std::list<Bullet*> bullets;
 };

@@ -23,8 +23,15 @@ void Player::update () {
 
 	srcR.x = 32 * currentFrame + offset;
 
+	// bullets
+	for ( auto b = bullets.begin(); b != bullets.end(); b++ ) {
+		(*b)->update();
+		if ( (*b)->destroyed() ) {
+			delete (*b);
+			bullets.erase(b++);
 		}
 	}
+	fireCurrent++;
 }
 
 //---------------------------------------------------------------------------
@@ -33,4 +40,23 @@ void Player::render() {
 		SDL_RenderCopy(Game::renderer, texture, &srcR, &dstR);
 	else
 		SDL_RenderCopyEx(Game::renderer, texture, &srcR, &dstR, 0, NULL, SDL_FLIP_HORIZONTAL);
+
+	// bullets
+	for ( auto & b : bullets )
+		b->render();
+}
+
+//---------------------------------------------------------------------------
+void Player::shoot () {
+	if ( ! ammo || fireCurrent < fireRate )
+		return;
+
+	fireCurrent = 0;
+	ammo--;
+
+	int direction = isLookingRight ? 1 : -1;
+	Vector2 offset = Vector2( direction * 40, 0 );
+
+    Bullet *b = new Bullet( "assets/images/bullet.png", *getOrigin() + offset, direction );
+    bullets.emplace_back( b );
 }
