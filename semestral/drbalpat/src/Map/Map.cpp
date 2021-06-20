@@ -1,6 +1,9 @@
 #include "Map.hpp"
+#include "../Game/Game.hpp"
 #include "../TextureManager/TextureManager.hpp"
 #include "../Camera/Camera.hpp"
+#include "../Entities/EntityManager/EntityManager.hpp"
+#include "../Entities/Enemies/Enemy.hpp"
 
 #include <libxml/parser.h>
 #include <libxml/tree.h>
@@ -9,8 +12,6 @@
 
 #include <cstdlib>
 #include <iostream>
-
-std::vector< std::shared_ptr<Tile> > Map::tiles = {};
 
 Map::Map () {
 	backgroud = TextureManager::LoadTexture("assets/images/background/country-platform-back.png");
@@ -21,22 +22,19 @@ Map::Map () {
 
 	dstR.w = dstR.h = 64;
 
-	if ( ! loadMap( "assets/map3.tmx" ) )
+	if ( ! loadMap( "assets/map.tmx" ) )
 		std::cout << "Failed to load the map!" << std::endl;
 
 }
 
-void Map::update () {
-	for ( auto & t : tiles )
-		t->update();
+Map::~Map () {
+	SDL_DestroyTexture(backgroud);
+	SDL_DestroyTexture(forest);
 }
 
 void Map::render () {
 	SDL_RenderCopy(Game::renderer, backgroud, NULL, NULL);
 	SDL_RenderCopy(Game::renderer, forest, NULL, NULL);
-
-	for ( auto & t : tiles )
-		t->render();
 }
 
 bool Map::loadMap ( const char * filePath ) {
@@ -51,12 +49,11 @@ bool Map::loadMap ( const char * filePath ) {
 
 	unsigned char * map = path->nodesetval->nodeTab[0]->children->content;
 
+	// create game entities
 	std::string row;
     int rowsCnt = -1, colsCnt = 0;
 
 	for ( int i = 0; map[i]; i++ ) {
-		std::string path = "assets/images/tiles/";
-
 		if ( map[i] == '\n' ) {
 			rowsCnt++;
 			colsCnt = 0;
@@ -65,15 +62,22 @@ bool Map::loadMap ( const char * filePath ) {
 			colsCnt++;
 			continue;
 		} else if ( map[i] == '1' )
-			path += "ground.png";
+			EntityManager::getInstance()->addEntity(
+				"tile",
+				std::make_shared<Tile>( "assets/images/tiles/ground.png", Vector2(64 * colsCnt, 64 * rowsCnt) )
+			);
 		else if ( map[i] == '2' )
-			path += "ground-top.png";
+			EntityManager::getInstance()->addEntity(
+				"tile",
+				std::make_shared<Tile>( "assets/images/tiles/ground-top.png", Vector2(64 * colsCnt, 64 * rowsCnt) )
+			);
+		else if ( map[i] == '3' )
+			EntityManager::getInstance()->addEntity(
+				"enemy",
+				std::make_shared<Enemy>( "assets/images/enemy/idle/frame-1.png", Vector2(64 * colsCnt, 64 * rowsCnt) )
+			);
 		else
 			continue;
-
-		tiles.emplace_back(
-				std::make_shared<Tile>( path.c_str(), Vector2(64 * colsCnt, 64 * rowsCnt) )
-			);
 
 		colsCnt++;
 	}

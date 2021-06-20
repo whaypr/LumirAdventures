@@ -1,12 +1,14 @@
 #include "CollisionChecker.hpp"
-#include "../Map/Map.hpp"
+#include "../Entities/EntityManager/EntityManager.hpp"
 
-std::vector< std::pair<char, std::shared_ptr<Tile>> > CollisionChecker::checkCollision ( Vector2 pos, int w, int h ) {
-	std::vector< std::pair<char, std::shared_ptr<Tile>> > res; // first: side of collision, second: colliding tile
+CollisionChecker * CollisionChecker::collisionChecker = nullptr;
 
-	for ( auto & t : Map::getTiles() ) {
-		Vector2 tPos = t->getPos();
-		SDL_Rect tRect = t->getRect();
+std::vector< std::pair<char, std::shared_ptr<Entity>> > CollisionChecker::checkCollision (  std::string entityID, Vector2 pos, int w, int h ) {
+	std::vector< std::pair<char, std::shared_ptr<Entity>> > res; // first: side of collision, second: colliding tile
+
+	for ( auto & e : EntityManager::getInstance()->getEntities( entityID ) ) {
+		Vector2 tPos = e->getPos();
+		SDL_Rect tRect = e->getRect();
 
 		// AABB - collision occurs
 		if ( pos.x + w >= tPos.x &&
@@ -23,19 +25,19 @@ std::vector< std::pair<char, std::shared_ptr<Tile>> > CollisionChecker::checkCol
 
 				// bottom collision
 			if (b_clsn < t_clsn && b_clsn < r_clsn && b_clsn < l_clsn ) {
-				res.push_back( std::make_pair('b', t) );
+				res.push_back( std::make_pair('b', e) );
 			}
 				// top collision
 			if (t_clsn < b_clsn && t_clsn < r_clsn && t_clsn < l_clsn) {
-				res.push_back( std::make_pair('t', t) );
+				res.push_back( std::make_pair('t', e) );
 			}
 				// right collision
 			if (r_clsn < l_clsn && r_clsn < b_clsn && r_clsn < t_clsn) {
-				res.push_back( std::make_pair('r', t) );
+				res.push_back( std::make_pair('r', e) );
 			}
 				// left collision
 			if (l_clsn < r_clsn && l_clsn < b_clsn && l_clsn < t_clsn ) {
-				res.push_back( std::make_pair('l', t) );
+				res.push_back( std::make_pair('l', e) );
 			}
 		}
 	}

@@ -1,12 +1,19 @@
 #pragma once
 
 #include "../Math/Math.hpp"
-#include "../Entities//Tiles/Tile.hpp"
+#include "../Entities/Entity.hpp"
 
 #include <vector>
 #include <memory>
+#include <string>
 
 class CollisionChecker {
 public:
-	std::vector< std::pair<char, std::shared_ptr<Tile>> > checkCollision ( Vector2 pos, int w, int h );
+	static CollisionChecker * getInstance() { return collisionChecker = collisionChecker ? collisionChecker : new CollisionChecker(); }
+
+	std::vector< std::pair<char, std::shared_ptr<Entity>> > checkCollision ( std::string entityID, Vector2 pos, int w, int h );
+
+private:
+	CollisionChecker() {}
+	static CollisionChecker * collisionChecker;
 };

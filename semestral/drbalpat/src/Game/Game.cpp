@@ -1,8 +1,10 @@
 #include "Game.hpp"
 #include "../TextureManager/TextureManager.hpp"
+#include "../Entities/EntityManager/EntityManager.hpp"
 #include "../CollisionChecker/CollisionChecker.hpp"
 #include "../Camera/Camera.hpp"
 #include "../UI/Pause.hpp"
+#include "../Entities/Enemies/Enemy.hpp"
 
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
@@ -48,6 +50,7 @@ Game::Game ( const char * title, int xpos, int ypos, int w, int h, bool fullscre
 
 	// entities creation
 	pl = new Player( "assets/images/characters.png", Vector2(600, 80) );
+	EntityManager::getInstance()->addEntity( "player", std::shared_ptr<Player>(pl) );
 
 	Camera::getCamera()->setView( width, height );
 	Camera::getCamera()->setTarget( pl->getOrigin() );
@@ -107,6 +110,7 @@ void Game::handleEvents () {
 
 //---------------------------------------------------------------------------
 void Game::update () {
+	EntityManager::getInstance()->update();
 
 	hud->SetHp( pl->getHp(), pl->getMaxHp() );
 	hud->SetAmmo( pl->getAmmo() );
