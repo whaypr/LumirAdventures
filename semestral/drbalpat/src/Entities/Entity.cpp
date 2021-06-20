@@ -1,3 +1,4 @@
+#include "../Game/Game.hpp"
 #include "Entity.hpp"
 #include "../TextureManager/TextureManager.hpp"
 #include "../Math/Math.hpp"
@@ -18,6 +19,10 @@ Entity::Entity ( const char * texturePath, Vector2 pos ) : pos ( pos ) {
 	dstR.h = srcR.h;
 }
 
+Entity::~Entity () {
+	SDL_DestroyTexture(texture);
+}
+
 void Entity::update () {
 	Vector2 cam = Camera::getCamera()->getPos();
 
@@ -33,5 +38,6 @@ void Entity::render () {
 }
 
 void Entity::changeTexture ( const char * texturePath ) {
+	SDL_DestroyTexture(texture);
 	texture = TextureManager::LoadTexture(texturePath); 
 }
