@@ -2,7 +2,7 @@
 CXX      = g++
 LD       = g++
 CXXFLAGS = -Wall -pedantic -g -I/usr/include/libxml2/
-LIBS     = -lSDL2main -lSDL2 -lSDL2_image -lxml2
+LIBS     = -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lxml2
 OUT      = drbalpat
 
 # GENERATE ALL / DELETE ALL

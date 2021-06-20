@@ -5,8 +5,10 @@
 #include "../Map/Map.hpp"
 #include "../Camera/Camera.hpp"
 
+#include <SDL2/SDL_ttf.h>
 #include <iostream>
 
+int Game::width, Game::height;
 SDL_Renderer * Game::renderer = nullptr;
 SDL_Event Game::event;
 
@@ -32,6 +34,9 @@ void Game::init ( const char * title, int xpos, int ypos, int width, int height,
 			std::cout << "RENDERER CREATION ERROR!" << std::endl;
 
 		isRunning = true;
+
+		if ( TTF_Init() == -1 )
+			std::cout << "TTF ERROR" << std::endl;
 	} else {
 		std::cout << "INIT ERROR!" << std::endl;
 		isRunning = false;
@@ -40,8 +45,12 @@ void Game::init ( const char * title, int xpos, int ypos, int width, int height,
 
 	//temp
 	map = new Map();
+	hud = new HUD();
+
+	// entities creation
 	pl = new Player( "assets/images/characters.png", Vector2(600, 80) );
 
+	Camera::getCamera()->setView( width, height );
 	Camera::getCamera()->setTarget( pl->getOrigin() );
 }
 
@@ -64,7 +73,7 @@ void Game::handleEvents () {
 	if ( state[SDL_SCANCODE_D] )
 		pl->changeVelocity( Vector2(pl->getSpeed(), 0) );
 	if ( state[SDL_SCANCODE_SPACE] && pl->grounded() )
-		pl->changeVelocity( Vector2(0, -8) );
+		pl->changeVelocity( Vector2(0, -9) );
 }
 
 //---------------------------------------------------------------------------
@@ -72,6 +81,9 @@ void Game::update () {
 	//temp
 	map->update();
 	pl->update();
+	hud->SetHp( pl->getHp(), pl->getMaxHp() );
+	hud->SetAmmo( pl->getAmmo() );
+	hud->SetScore( 4242 );
 
 	Camera::getCamera()->update();
 }

@@ -2,6 +2,8 @@
 
 #include <SDL2/SDL.h>
 
+#include "../UI/HUD.hpp"
+
 class Game {
 public:
 	void init ( const char * title, int xpos, int ypos, int width, int height, bool fullscreen );
@@ -19,4 +21,6 @@ public:
 private:
 	bool isRunning;
 	SDL_Window * window;
+	HUD *hud;
+
 };
