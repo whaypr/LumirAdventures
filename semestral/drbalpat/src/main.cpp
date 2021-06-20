@@ -3,8 +3,7 @@
 using namespace std;
 
 int main ( int argc, char * argv[] ) {
-	Game game;
-	game.init( "PA2 Semestral work", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1600, 960, false );
+	Game game( "PA2 Semestral work", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1600, 960, false );
 
 	const int FPS = game.getRefreshRate();
 	const int frameDelay = 1000 / FPS;
@@ -13,7 +12,8 @@ int main ( int argc, char * argv[] ) {
 		Uint32 frameStart = SDL_GetTicks();
 
 		game.handleEvents();
-		game.update();
+		if ( ! game.stopped() )
+			game.update();
 		game.render();
 
 		int frameTime = SDL_GetTicks() - frameStart;
@@ -21,6 +21,5 @@ int main ( int argc, char * argv[] ) {
 			SDL_Delay( frameDelay - frameTime ) ;
 	}
 
-	game.clean();
 	return 0;
 }

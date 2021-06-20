@@ -1,9 +1,8 @@
 #include "Game.hpp"
 #include "../TextureManager/TextureManager.hpp"
 #include "../CollisionChecker/CollisionChecker.hpp"
-#include "../Entities/Player/Player.hpp"
-#include "../Map/Map.hpp"
 #include "../Camera/Camera.hpp"
+#include "../UI/Pause.hpp"
 
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
@@ -12,12 +11,11 @@ int Game::width, Game::height;
 SDL_Renderer * Game::renderer = nullptr;
 SDL_Event Game::event;
 
-//temp
-Map * map;
-Player *pl;
-
 //---------------------------------------------------------------------------
-void Game::init ( const char * title, int xpos, int ypos, int width, int height, bool fullscreen ) {
+Game::Game ( const char * title, int xpos, int ypos, int w, int h, bool fullscreen ) {
+	width = w;
+	height = h;
+
 	int flags = 0;
 	if ( fullscreen )
 		flags = SDL_WINDOW_FULLSCREEN;
@@ -43,7 +41,8 @@ void Game::init ( const char * title, int xpos, int ypos, int width, int height,
 		return;
 	}
 
-	//temp
+	isPaused = false;
+
 	map = new Map();
 	hud = new HUD();
 
@@ -55,6 +54,17 @@ void Game::init ( const char * title, int xpos, int ypos, int width, int height,
 }
 
 //---------------------------------------------------------------------------
+Game::~Game () {
+	delete pl;
+	delete hud;
+	delete map;
+
+	SDL_DestroyWindow(window);
+	SDL_DestroyRenderer(renderer);
+	SDL_Quit();
+}
+
+//---------------------------------------------------------------------------
 void Game::handleEvents () {
 	SDL_PollEvent( &event );
 
@@ -62,7 +72,22 @@ void Game::handleEvents () {
 		case SDL_QUIT:
 			isRunning = false;
 			break;
+		case SDL_KEYDOWN:
+			// pause the game
+			if ( event.key.keysym.sym == SDLK_ESCAPE && ! esc_lock ) {
+				isPaused = !isPaused;
+				esc_lock = true; // cannot unpause until next press
+
+			}
+			break;
+		case SDL_KEYUP:
+			if ( event.key.keysym.sym == SDLK_ESCAPE )
+				esc_lock = false;
+			break;
 	}
+
+	if ( isPaused )
+		return;
 
 	// keyboard input
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
@@ -74,13 +99,15 @@ void Game::handleEvents () {
 		pl->changeVelocity( Vector2(pl->getSpeed(), 0) );
 	if ( state[SDL_SCANCODE_SPACE] && pl->grounded() )
 		pl->changeVelocity( Vector2(0, -9) );
+
+	// shoot
+	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))
+		pl->shoot();
 }
 
 //---------------------------------------------------------------------------
 void Game::update () {
-	//temp
-	map->update();
-	pl->update();
+
 	hud->SetHp( pl->getHp(), pl->getMaxHp() );
 	hud->SetAmmo( pl->getAmmo() );
 	hud->SetScore( 4242 );
@@ -92,20 +119,15 @@ void Game::update () {
 void Game::render () {
 	SDL_RenderClear(renderer);
 
-	//temp
 	map->render();
-	pl->render();
+	EntityManager::getInstance()->render();
+	hud->render();
+
+	if ( isPaused ) {
+		Pause::getPause()->render();
+	}
 
 	SDL_RenderPresent(renderer);
-}
-
-//---------------------------------------------------------------------------
-void Game::clean () {
-	SDL_DestroyWindow(window);
-	SDL_DestroyRenderer(renderer);
-	SDL_Quit();
-
-	std::cout << "Game cleaned!" << std::endl;
 }
 
 //---------------------------------------------------------------------------
