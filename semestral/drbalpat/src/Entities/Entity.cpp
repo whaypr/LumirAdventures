@@ -1,9 +1,9 @@
 #include "../Game/Game.hpp"
 #include "Entity.hpp"
 #include "../TextureManager/TextureManager.hpp"
-#include "../Math/Math.hpp"
 #include "../Camera/Camera.hpp"
 
+//---------------------------------------------------------------------------
 Entity::Entity ( const char * texturePath, Vector2 pos ) : pos ( pos ) {
 	texture = TextureManager::LoadTexture(texturePath);
 
@@ -19,10 +19,12 @@ Entity::Entity ( const char * texturePath, Vector2 pos ) : pos ( pos ) {
 	dstR.h = srcR.h;
 }
 
+//---------------------------------------------------------------------------
 Entity::~Entity () {
 	SDL_DestroyTexture(texture);
 }
 
+//---------------------------------------------------------------------------
 void Entity::update () {
 	Vector2 cam = Camera::getCamera()->getPos();
 
@@ -32,11 +34,12 @@ void Entity::update () {
 	origin = { pos.x + dstR.w/2, pos.y + dstR.h/2 };
 }
 
-
-void Entity::render () {
+//---------------------------------------------------------------------------
+void Entity::render () const {
 	SDL_RenderCopy(Game::renderer, texture, &srcR, &dstR);
 }
 
+//---------------------------------------------------------------------------
 void Entity::changeTexture ( const char * texturePath ) {
 	SDL_DestroyTexture(texture);
 	texture = TextureManager::LoadTexture(texturePath); 

@@ -5,38 +5,37 @@
 #include "../Entities/EntityManager/EntityManager.hpp"
 #include "../Entities/Enemies/Enemy.hpp"
 
-#include <libxml/parser.h>
-#include <libxml/tree.h>
 #include <libxml/xpath.h>
-#include <libxml/xmlmemory.h>
 
 #include <cstdlib>
 #include <iostream>
 
+//---------------------------------------------------------------------------
 Map::Map () {
 	backgroud = TextureManager::LoadTexture("assets/images/background/country-platform-back.png");
 	forest = TextureManager::LoadTexture("assets/images/background/country-platform-forest.png");
 
-	srcR.x = srcR.y = 0;
-	srcR.w = srcR.h = 64;
+	if ( ! loadMap( "assets/map.tmx" ) ) {
+		SDL_DestroyTexture(backgroud);
+		SDL_DestroyTexture(forest);
 
-	dstR.w = dstR.h = 64;
-
-	if ( ! loadMap( "assets/map.tmx" ) )
-		std::cout << "Failed to load the map!" << std::endl;
-
+		throw "Failed to load the map!";
+	}
 }
 
+//---------------------------------------------------------------------------
 Map::~Map () {
 	SDL_DestroyTexture(backgroud);
 	SDL_DestroyTexture(forest);
 }
 
-void Map::render () {
+//---------------------------------------------------------------------------
+void Map::render () const {
 	SDL_RenderCopy(Game::renderer, backgroud, NULL, NULL);
 	SDL_RenderCopy(Game::renderer, forest, NULL, NULL);
 }
 
+//---------------------------------------------------------------------------
 bool Map::loadMap ( const char * filePath ) {
 	LIBXML_TEST_VERSION
 
@@ -74,7 +73,7 @@ bool Map::loadMap ( const char * filePath ) {
 		else if ( map[i] == '3' )
 			EntityManager::getInstance()->addEntity(
 				"enemy",
-				std::make_shared<Enemy>( "assets/images/enemy/idle/frame-1.png", Vector2(64 * colsCnt, 64 * rowsCnt) )
+				std::make_shared<Enemy>( "assets/images/enemies/enemy-1.png", Vector2(64 * colsCnt, 64 * rowsCnt) )
 			);
 		else
 			continue;

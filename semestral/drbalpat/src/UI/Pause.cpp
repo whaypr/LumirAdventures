@@ -2,8 +2,9 @@
 #include "../Game/Game.hpp"
 #include "../TextureManager/TextureManager.hpp"
 
-Pause * Pause::pause = nullptr;
+Pause * Pause::pause;
 
+//---------------------------------------------------------------------------
 Pause::Pause() {
 	std::string s = "PAUSED";
 	SDL_Surface * surf =  TTF_RenderText_Blended( TTF_OpenFont("assets/fonts/basic.ttf", 80), s.c_str(), {255, 255, 255} );
@@ -18,12 +19,14 @@ Pause::Pause() {
 	SDL_SetTextureBlendMode( background, SDL_BLENDMODE_BLEND);
 }
 
+//---------------------------------------------------------------------------
 Pause::~Pause () {
 	SDL_DestroyTexture(title);
 	SDL_DestroyTexture(background);
 }
 
-void Pause::render () {
+//---------------------------------------------------------------------------
+void Pause::render () const {
 	SDL_RenderCopy(Game::renderer, title, NULL, &titlePos);
 	SDL_RenderCopy(Game::renderer, background, NULL, NULL);
 }

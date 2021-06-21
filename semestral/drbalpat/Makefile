@@ -10,6 +10,7 @@ all: compile doc
 
 clean:
 	rm -f $(OBJ) $(DEP) $(OUT)
+	find doc/ -type f -not -name '*.md' -delete ; rmdir doc/search
 
 # CREATE
 SRC     := $(shell find src -name '*.cpp')
@@ -25,7 +26,7 @@ compile: $(OBJ)
 	$(CXX) $(CXXFLAGS) -MMD -MP -c $< -o $@
 
 doc:
-	# todo
+	doxygen Doxyfile
 
 # RUN / DEBUG
 run: compile
@@ -36,4 +37,6 @@ valg: compile
 
 valg+: compile
 	valgrind --leak-check=full --show-leak-kinds=all --leak-resolution=high --track-origins=yes --vgdb=yes ./$(OUT)
+
+.PHONY: doc
 	

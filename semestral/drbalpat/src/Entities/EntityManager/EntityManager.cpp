@@ -1,7 +1,8 @@
 #include "EntityManager.hpp"
 
-EntityManager * EntityManager::entityManager = nullptr;
+EntityManager * EntityManager::entityManager;
 
+//---------------------------------------------------------------------------
 void EntityManager::update() {
 	for ( auto & e : entities )
 		for ( auto ee = e.second.begin(); ee != e.second.end(); ee++ ) {
@@ -12,7 +13,8 @@ void EntityManager::update() {
 		}
 }
 
-void EntityManager::render() {
+//---------------------------------------------------------------------------
+void EntityManager::render() const {
 	for ( auto & e : entities )
 		for ( auto ee : e.second )
 			ee->render();	

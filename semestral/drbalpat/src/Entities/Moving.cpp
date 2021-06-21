@@ -1,5 +1,6 @@
 #include "Moving.hpp"
 
+//---------------------------------------------------------------------------
 Moving::Moving ( const char * texturePath, Vector2 pos, bool enableGravity ) :
 	Entity( texturePath, pos ),
 	gravityEnabled ( enableGravity ) {}

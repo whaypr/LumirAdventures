@@ -7,10 +7,11 @@
 #include "../Entities/Enemies/Enemy.hpp"
 
 #include <SDL2/SDL_ttf.h>
+
 #include <iostream>
 
 int Game::width, Game::height;
-SDL_Renderer * Game::renderer = nullptr;
+SDL_Renderer * Game::renderer;
 SDL_Event Game::event;
 
 //---------------------------------------------------------------------------
@@ -25,25 +26,23 @@ Game::Game ( const char * title, int xpos, int ypos, int w, int h, bool fullscre
 	if ( SDL_Init(SDL_INIT_EVERYTHING) == 0 ) {
 		window = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
 		if ( ! window )
-			std::cout << "WINDOW CREATION ERROR!" << std::endl;
+			std::cerr << "WINDOW CREATION ERROR!" << std::endl;
 
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		if ( renderer ) {
 			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		} else
-			std::cout << "RENDERER CREATION ERROR!" << std::endl;
+			std::cerr << "RENDERER CREATION ERROR!" << std::endl;
 
 		isRunning = true;
 
 		if ( TTF_Init() == -1 )
-			std::cout << "TTF ERROR" << std::endl;
+			std::cerr << "TTF ERROR" << std::endl;
 	} else {
-		std::cout << "INIT ERROR!" << std::endl;
+		std::cerr << "INIT ERROR!" << std::endl;
 		isRunning = false;
 		return;
 	}
-
-	isPaused = false;
 
 	map = new Map();
 	hud = new HUD();
@@ -120,7 +119,7 @@ void Game::update () {
 }
 
 //---------------------------------------------------------------------------
-void Game::render () {
+void Game::render () const {
 	SDL_RenderClear(renderer);
 
 	map->render();
@@ -135,7 +134,7 @@ void Game::render () {
 }
 
 //---------------------------------------------------------------------------
-int Game::getRefreshRate() {
+int Game::getRefreshRate() const {
 	int displayIndex = SDL_GetWindowDisplayIndex( window );
 
 	SDL_DisplayMode mode;

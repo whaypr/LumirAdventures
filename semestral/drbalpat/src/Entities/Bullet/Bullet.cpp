@@ -2,12 +2,14 @@
 #include "../../CollisionChecker/CollisionChecker.hpp"
 #include "../Enemies/Enemy.hpp"
 
+//---------------------------------------------------------------------------
 Bullet::Bullet ( const char * texturePath, Vector2 pos, int direction, bool enableGravity ) :
 	Moving( texturePath, pos, enableGravity ) {
 	speed = 15;
 	velocity = Vector2( direction * speed, 0 );
 }
 
+//---------------------------------------------------------------------------
 void Bullet::update() {
 	Moving::update();
 

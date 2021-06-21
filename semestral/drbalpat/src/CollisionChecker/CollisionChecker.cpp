@@ -1,10 +1,11 @@
 #include "CollisionChecker.hpp"
 #include "../Entities/EntityManager/EntityManager.hpp"
 
-CollisionChecker * CollisionChecker::collisionChecker = nullptr;
+CollisionChecker * CollisionChecker::collisionChecker;
 
+//---------------------------------------------------------------------------
 std::vector< std::pair<char, std::shared_ptr<Entity>> > CollisionChecker::checkCollision (  std::string entityID, Vector2 pos, int w, int h ) {
-	std::vector< std::pair<char, std::shared_ptr<Entity>> > res; // first: side of collision, second: colliding tile
+	std::vector< std::pair<char, std::shared_ptr<Entity>> > res; // first: side of collision, second: colliding entity
 
 	for ( auto & e : EntityManager::getInstance()->getEntities( entityID ) ) {
 		Vector2 tPos = e->getPos();

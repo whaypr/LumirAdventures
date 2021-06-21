@@ -35,7 +35,7 @@ void Player::update () {
 }
 
 //---------------------------------------------------------------------------
-void Player::render() {
+void Player::render() const {
 	if ( isLookingRight )
 		SDL_RenderCopy(Game::renderer, texture, &srcR, &dstR);
 	else

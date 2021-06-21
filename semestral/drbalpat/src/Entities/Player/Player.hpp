@@ -1,6 +1,13 @@
-#pragma once
+/**
+* \brief Class representing playable character controlled by the person playing the game.
+*
+* Player can move move, jump and shoot.
+*
+* Extends Character by shoot method and ammo related private variables.
+*/
 
 #include <list>
+#pragma once
 
 #include "../Character.hpp"
 #include "../Bullet/Bullet.hpp"

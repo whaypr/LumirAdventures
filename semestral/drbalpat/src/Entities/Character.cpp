@@ -1,8 +1,11 @@
 #include "Character.hpp"
 #include "../CollisionChecker/CollisionChecker.hpp"
 
-Character::Character ( const char * texturePath, Vector2 pos ) : Moving( texturePath, pos ) {}
+//---------------------------------------------------------------------------
+Character::Character ( const char * texturePath, Vector2 pos ) : Moving( texturePath, pos ) {
+}
 
+//---------------------------------------------------------------------------
 void Character::update() {
 	Moving::update();
 
@@ -68,6 +71,7 @@ void Character::update() {
 	velocity.x = 0;
 }
 
+//---------------------------------------------------------------------------
 void Character::changeHP ( int val ) {
 	hp += val;
 	hp = hp > max_hp ? max_hp : hp;

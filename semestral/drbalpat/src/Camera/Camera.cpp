@@ -1,7 +1,8 @@
 #include "Camera.hpp"
 
-Camera * Camera::camera = nullptr;
+Camera * Camera::camera;
 
+//---------------------------------------------------------------------------
 void Camera::update () {
 	view.x = target->x - view.w / 2;
 	view.y = target->y - view.h / 2;
