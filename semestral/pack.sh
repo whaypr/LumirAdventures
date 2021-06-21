@@ -2,6 +2,8 @@
 
 F='drbalpat'
 
+( cd drbalpat; make clean; )
+
 zip -r drbalpat.zip       \
        $F/zadani.txt      \
        $F/prohlaseni.txt  \
