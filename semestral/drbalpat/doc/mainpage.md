@@ -1,6 +1,9 @@
 # Welcome to the documentation of my PA2 semestral work!
 
 ### Introduction
+
+![demo](../examples/demo.gif)
+
 _Unbelievable adventures of Lumír the Heartshooter_ is a C++ platform shooter made with [SDL](https://www.libsdl.org/).
 
 Your goal is to defeat all enemies attacking on you with help of your powerful ability to shoot hearts.
