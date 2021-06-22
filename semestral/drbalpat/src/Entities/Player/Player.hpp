@@ -6,7 +6,6 @@
 * Extends Character by shoot method and ammo related private variables.
 */
 
-#include <list>
 #pragma once
 
 #include "../Character.hpp"
@@ -17,15 +16,21 @@ public:
 	Player ( const char * texturePath, Vector2 pos );
 
 	void update () override;
-	void render() override;
+	void render() const override;
 
-	int getAmmo () { return ammo; }
+
+	/**
+	* Get number of ammo player have.
+	* @return number of ammo player have
+	*/
+	int getAmmo () const { return ammo; }
+	/**
+	* If enough ammo and gun is loaded, fire new bullet in player's current direction.
+	*/
 	void shoot();
 
 private:
 	int ammo = 42;
 	int fireRate = 20;
 	int fireCurrent = 0;
-
-	std::list<Bullet*> bullets;
 };

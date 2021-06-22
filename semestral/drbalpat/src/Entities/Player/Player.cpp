@@ -18,14 +18,6 @@ Player::Player ( const char * texturePath, Vector2 pos ) : Character( texturePat
 void Player::update () {
 	Character::update();
 
-	srcR.x = 32 * currentFrame + offset;
-
-	// bullets
-	for ( auto b = bullets.begin(); b != bullets.end(); b++ ) {
-		(*b)->update();
-		if ( (*b)->destroyed() ) {
-			delete (*b);
-			bullets.erase(b++);
 	// enemy collision: get damage when hit
 	std::vector< std::pair<char, std::shared_ptr<Entity>> > col = CollisionChecker::getInstance()->checkCollision( "enemy", pos, dstR.w, dstR.h );
 	if ( ! col.empty() ) {
@@ -41,6 +33,10 @@ void Player::update () {
 		}
 	}
 	fireCurrent++;
+
+	// texture scaling
+	dstR.w *= 4;
+	dstR.h *= 4;
 }
 
 //---------------------------------------------------------------------------
@@ -49,10 +45,6 @@ void Player::render() const {
 		SDL_RenderCopy(Game::renderer, texture, &srcR, &dstR);
 	else
 		SDL_RenderCopyEx(Game::renderer, texture, &srcR, &dstR, 0, NULL, SDL_FLIP_HORIZONTAL);
-
-	// bullets
-	for ( auto & b : bullets )
-		b->render();
 }
 
 //---------------------------------------------------------------------------
@@ -66,6 +58,9 @@ void Player::shoot () {
 	int direction = isLookingRight ? 1 : -1;
 	Vector2 offset = Vector2( direction * 40, 0 );
 
-    Bullet *b = new Bullet( "assets/images/bullet.png", *getOrigin() + offset, direction );
-    bullets.emplace_back( b );
+	// create new bullet
+    EntityManager::getInstance()->addEntity(
+		"bullet",
+		std::make_shared<Bullet>( "assets/images/bullet.png", *getOrigin() + offset, direction )
+	);
 }
