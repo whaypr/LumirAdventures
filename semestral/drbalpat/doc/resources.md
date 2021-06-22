@@ -9,9 +9,11 @@
 - http://lazyfoo.net/tutorials/SDL/index.php
 
 ### Assets
-- https://opengameart.org/content/a-platformer-in-the-forest
+- https://opengameart.org/content/a-platformer-in-the-forest (background)
 - https://opengameart.org/content/country-side-platform-tiles (background)
 - https://about.me/raylarabie (hp font)
+- https://opengameart.org/content/simple-shooter-icons (pickups)
+- https://adrverissimo.itch.io/slime-monster-pixel-art (enemy)
 
 ### Code snippets and tips
 - https://gamedev.stackexchange.com/questions/121874/removing-delay-at-start-of-a-key-press (keyboard input)

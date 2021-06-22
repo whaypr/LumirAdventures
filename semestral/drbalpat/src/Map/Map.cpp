@@ -15,7 +15,7 @@ Map::Map () {
 	backgroud = TextureManager::LoadTexture("assets/images/background/country-platform-back.png");
 	forest = TextureManager::LoadTexture("assets/images/background/country-platform-forest.png");
 
-	if ( ! loadMap( "assets/map.tmx" ) ) {
+	if ( ! loadMap( "assets/map3.tmx" ) ) {
 		SDL_DestroyTexture(backgroud);
 		SDL_DestroyTexture(forest);
 
@@ -73,7 +73,7 @@ bool Map::loadMap ( const char * filePath ) {
 		else if ( map[i] == '3' )
 			EntityManager::getInstance()->addEntity(
 				"enemy",
-				std::make_shared<Enemy>( "assets/images/enemies/enemy-1.png", Vector2(64 * colsCnt, 64 * rowsCnt) )
+				std::make_shared<Enemy>( "assets/images/enemies/slime.png", Vector2(64 * colsCnt, 64 * rowsCnt) )
 			);
 		else
 			continue;

@@ -9,6 +9,13 @@
 
 //---------------------------------------------------------------------------
 Enemy::Enemy ( const char * texturePath, Vector2 pos ) : Character( texturePath, pos ) {
+	anim->addFrame( "idle", {6,11,25,21} );
+	anim->addFrame( "idle", {36,11,28,21} );
+	anim->addFrame( "idle", {70,11,25,21} );
+	anim->addFrame( "idle", {104,11,22,21} );
+
+	anim->addFrame( "move", {6,13,25,19} );
+	anim->addFrame( "jump", {6,13,25,19} );
 }
 
 //---------------------------------------------------------------------------
@@ -20,7 +27,7 @@ void Enemy::update() {
 
 		// chance to drop a pickup
 		std::srand ( time(NULL) ); // init pseudo RNG with seed
-		int r = rand() % 10 + 1;
+		int r = rand() % 10;
 		if ( r >= 0 && r <= 2 ) {
 			EntityManager::getInstance()->addEntity(
 				"boxHp",
@@ -35,4 +42,8 @@ void Enemy::update() {
 
 		isDestroyed = true;
 	}
+
+	// texture scaling
+	dstR.w *= 4;
+	dstR.h *= 4;
 }
