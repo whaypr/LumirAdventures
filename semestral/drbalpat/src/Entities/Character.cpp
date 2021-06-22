@@ -3,6 +3,12 @@
 
 //---------------------------------------------------------------------------
 Character::Character ( const char * texturePath, Vector2 pos ) : Moving( texturePath, pos ) {
+	anim = new Animation( &srcR, &dstR );
+}
+
+//---------------------------------------------------------------------------
+Character::~Character () {
+	delete anim;
 }
 
 //---------------------------------------------------------------------------
@@ -54,18 +60,13 @@ void Character::update() {
 	pos += velocity;
 
 	// animation
-		// on the ground
 	if ( grounded() ) {
-		if ( velocity.x || velocity.y ) {
-			if ( lastTime + frameRate < SDL_GetTicks() ) {
-				currentFrame = ( currentFrame + 1 ) % 4;
-				lastTime = SDL_GetTicks();
-			}
-		} else
-			currentFrame = 0;
-		// in the air
+		if ( velocity.x || velocity.y )
+			anim->animate("move");
+		else
+			anim->animate("idle");
 	} else
-		currentFrame = 1;
+		anim->animate("jump");
 
 	// reset x velocity for calculations in the next step
 	velocity.x = 0;

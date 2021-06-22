@@ -7,10 +7,14 @@
 #pragma once
 
 #include "Moving.hpp"
+#include "../Animation/Animation.hpp"
+#include <vector>
 
 class Character : public Moving {
 public:
 	Character ( const char * texturePath, Vector2 pos );
+	~Character ();
+
 
 	/**
 	* * Update character's looking direction.
@@ -49,9 +53,5 @@ protected:
 	bool isLookingRight;
 	bool isGrounded;
 
-	// animation
-	int currentFrame = 0;
-	Uint64 frameRate = 150;
-	int lastTime = 0;
-
+	Animation * anim;
 };
