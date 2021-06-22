@@ -10,6 +10,10 @@ Enemy::Enemy ( const char * texturePath, Vector2 pos ) : Character( texturePath,
 void Enemy::update() {
 	Character::update();
 
-	if ( hp <= 0 )
+	if ( hp <= 0 ) {
+		Game::score = Game::score * 1.1 + max_hp;
+		}
+
 		isDestroyed = true;
+	}
 }

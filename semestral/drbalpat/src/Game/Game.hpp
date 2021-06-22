@@ -57,6 +57,12 @@ public:
 	int getRefreshRate () const;
 
 
+	/**
+	* If score is higher than the best previous score, save it to a file.
+	*/
+	void saveBestScore();
+
+
 	//! game window width
 	static int width;
 	//! game window height
@@ -65,10 +71,12 @@ public:
 	static SDL_Renderer * renderer;
 	//! event object for handling input events
 	static SDL_Event event;
+	//! player's current reached score
+	static int score;
 
 private:
 	bool isRunning;
-	bool isPaused;
+	bool isPaused = false;
 
 	bool esc_lock = false;
 	bool left_lock = false;
@@ -78,4 +86,6 @@ private:
 	HUD *hud;
 
 	Player * pl;
+
+	int bestScore = 0;
 };

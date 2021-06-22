@@ -9,10 +9,12 @@
 #include <SDL2/SDL_ttf.h>
 
 #include <iostream>
+#include <fstream>
 
 int Game::width, Game::height;
 SDL_Renderer * Game::renderer;
 SDL_Event Game::event;
+int Game::score = 0;
 
 //---------------------------------------------------------------------------
 Game::Game ( const char * title, int xpos, int ypos, int w, int h, bool fullscreen ) {
@@ -53,6 +55,16 @@ Game::Game ( const char * title, int xpos, int ypos, int w, int h, bool fullscre
 
 	Camera::getCamera()->setView( width, height );
 	Camera::getCamera()->setTarget( pl->getOrigin() );
+
+	// load best score from file
+	std::ifstream ifs;
+	ifs.open("examples/best_score.txt");
+
+   	if( ifs ) {
+		ifs >> bestScore;
+		ifs.close();
+	} else
+		std::cerr << "Error: file could not be opened" << std::endl;
 }
 
 //---------------------------------------------------------------------------
@@ -72,6 +84,7 @@ void Game::handleEvents () {
 
 	switch ( event.type ) {
 		case SDL_QUIT:
+			saveBestScore();
 			isRunning = false;
 			break;
 		case SDL_KEYDOWN:
@@ -113,7 +126,7 @@ void Game::update () {
 
 	hud->SetHp( pl->getHp(), pl->getMaxHp() );
 	hud->SetAmmo( pl->getAmmo() );
-	hud->SetScore( 4242 );
+	hud->SetScore( score, bestScore );
 
 	Camera::getCamera()->update();
 }
@@ -141,4 +154,21 @@ int Game::getRefreshRate() const {
 	SDL_GetDisplayMode(displayIndex, 0, &mode);
 
 	return mode.refresh_rate;
+}
+
+//---------------------------------------------------------------------------
+void Game::saveBestScore() {
+	if ( score <= bestScore )
+		return;
+
+	std::ofstream ofs;
+	ofs.open("examples/best_score.txt");
+
+   	if( ! ofs ) {
+		std::cerr << "Error: file could not be opened" << std::endl;
+      	return;
+	}
+
+	ofs << score;
+	ofs.close();
 }
