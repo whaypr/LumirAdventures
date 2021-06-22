@@ -63,9 +63,3 @@ Prvky uživatelského rozhraní budou dědit ze třídy `UI`.
     - MainMenu
     - UpgradeMenu
     - Pause
-
-
-## Poznámky
-Dosavadní použité textury slouží pouze pro testovací účely a pravděpodobně budou změněny.
-Projekt se momentálně nachází ve stavu rozpracovaného core game enginu, po jeho dokončení přijde na řadu vlastní implementace hry.
-Řada prvků implementace je pouze dočasná (v kódu označeno jako "temp") a v budoucnu bude obsluhovaná a zpracovávaná svou vlastní třídou či metodou.
