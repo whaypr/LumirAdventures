@@ -48,9 +48,11 @@ public:
 
 protected:
 	int max_hp = 100;
-	int hp = max_hp;
+	int hp = 60;
+	int invincibleFrames = 120;
+	int lastHit = 0;
 
-	bool isLookingRight;
+	bool isLookingRight = true;
 	bool isGrounded;
 
 	Animation * anim;

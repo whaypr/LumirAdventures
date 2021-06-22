@@ -15,6 +15,7 @@ Character::~Character () {
 void Character::update() {
 	Moving::update();
 
+	lastHit++;
 	isGrounded = false;
 
 	if ( velocity.x > 0 )

@@ -1,20 +1,17 @@
 #include "Player.hpp"
 #include "../../Game/Game.hpp"
 #include "../../CollisionChecker/CollisionChecker.hpp"
-
-const int offset = 9; // spritesheet offset for each animation frame
+#include "../EntityManager/EntityManager.hpp"
+#include "../Enemies/Enemy.hpp"
 
 //---------------------------------------------------------------------------
 Player::Player ( const char * texturePath, Vector2 pos ) : Character( texturePath, pos ) {
-	isLookingRight = true;
-
-	srcR.x = 0 + offset;
-	srcR.y = 32 + offset;
-	srcR.w = 32 - (offset * 2);
-	srcR.h = 32 - offset;
-
-	dstR.w = (32 - (offset * 2)) * 4;
-	dstR.h = (32 - offset) * 4;
+	anim->addFrame( "move", {9,42,15,22} );
+	anim->addFrame( "move", {41,41,15,22} );
+	anim->addFrame( "move", {72,42,16,22} );
+	anim->addFrame( "move", {104,41,17,22} );
+	anim->addFrame( "idle", {9,42,15,22} );
+	anim->addFrame( "jump", {41,41,15,22} );
 }
 
 //---------------------------------------------------------------------------
@@ -29,6 +26,18 @@ void Player::update () {
 		if ( (*b)->destroyed() ) {
 			delete (*b);
 			bullets.erase(b++);
+	// enemy collision: get damage when hit
+	std::vector< std::pair<char, std::shared_ptr<Entity>> > col = CollisionChecker::getInstance()->checkCollision( "enemy", pos, dstR.w, dstR.h );
+	if ( ! col.empty() ) {
+		if ( lastHit >= invincibleFrames ) {
+			lastHit = 0;
+
+			Enemy * enemy = static_cast<Enemy*>( col[0].second.get() ); // this Entity is always Enemy
+			hp -= enemy->getDamage();
+
+			// game over
+			if ( hp <= 0 )
+				std::exit(1);
 		}
 	}
 	fireCurrent++;
