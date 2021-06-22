@@ -58,6 +58,11 @@ public:
 	* @return flag whether entity is destroyed or not
 	*/
 	bool destroyed () const { return isDestroyed; }
+	/**
+	* Set entity destroy flax to true
+	* @return flag whether entity is destroyed or not
+	*/
+	void destroy () { isDestroyed = true; }
 
 protected:
 	Vector2 pos, origin;

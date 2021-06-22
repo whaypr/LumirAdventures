@@ -32,6 +32,20 @@ void Player::update () {
 				std::exit(1);
 		}
 	}
+
+	// pickups collision: refill resources when picked up
+	col = CollisionChecker::getInstance()->checkCollision( "boxHp", origin, dstR.w, dstR.h );
+	if ( ! col.empty() ) {
+		col[0].second->destroy();
+		hp += 30;
+		hp = hp > max_hp ? max_hp : hp;
+	}
+	col = CollisionChecker::getInstance()->checkCollision( "boxAmmo", origin, dstR.w, dstR.h );
+	if ( ! col.empty() ) {
+		col[0].second->destroy();
+		ammo += 15;
+	}
+
 	fireCurrent++;
 
 	// texture scaling
